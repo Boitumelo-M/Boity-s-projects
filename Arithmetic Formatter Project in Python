@@ -1,0 +1,65 @@
+def arithmetic_arranger(problems, show_answers=False):
+    # Check if there are more than 5 problems
+    if len(problems) > 5:
+        return "Error: Too many problems."
+    
+    # Define variables for the lines
+    first_line = ""
+    second_line = ""
+    dashes_line = ""
+    result_line = ""
+    
+    for problem in problems:
+        # Split the problem into operands and operator
+        parts = problem.split()
+        operand1 = parts[0]
+        operator = parts[1]
+        operand2 = parts[2]
+        
+        # Validate the operator
+        if operator not in ['+', '-']:
+            return "Error: Operator must be '+' or '-'."
+        
+        # Validate that operands are digits
+        if not operand1.isdigit() or not operand2.isdigit():
+            return "Error: Numbers must only contain digits."
+        
+        # Validate that operands are not longer than 4 digits
+        if len(operand1) > 4 or len(operand2) > 4:
+            return "Error: Numbers cannot be more than four digits."
+        
+        # Calculate the width (longer operand + 2 for operator and space)
+        width = max(len(operand1), len(operand2)) + 2
+        
+        # Construct the first line: left operand
+        first_line += operand1.rjust(width) + "    "
+        
+        # Construct the second line: operator and right operand
+        second_line += operator + " " + operand2.rjust(width - 2) + "    "
+        
+        # Construct the dashes line
+        dashes_line += "-" * width + "    "
+        
+        # If show_answers is True, calculate and add the result
+        if show_answers:
+            if operator == "+":
+                result = str(int(operand1) + int(operand2))
+            elif operator == "-":
+                result = str(int(operand1) - int(operand2))
+            result_line += result.rjust(width) + "    "
+    
+    # Remove the trailing spaces at the end of each line
+    first_line = first_line.rstrip()
+    second_line = second_line.rstrip()
+    dashes_line = dashes_line.rstrip()
+    result_line = result_line.rstrip()
+    
+    # Return the final output with or without answers
+    if show_answers:
+        return "\n".join([first_line, second_line, dashes_line, result_line])
+    else:
+        return "\n".join([first_line, second_line, dashes_line])
+
+# Example Test Case:
+problems = ["32 + 698", "3801 - 2", "45 + 43", "123 + 49"]
+print(f'\n{arithmetic_arranger(problems, show_answers=True)}')
